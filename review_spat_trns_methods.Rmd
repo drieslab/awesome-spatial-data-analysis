@@ -1,0 +1,25 @@
+---
+title: "spatial-transcriptomics-methods"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(dplyr);library(readxl); library(kableExtra); library(stringr)
+options(knitr.table.format = "html", knitr.kable.NA = '') 
+```
+
+```{r}
+rawdat <- read_excel("~/Downloads/methods_resources.xlsx")
+cdat   <- rawdat %>% mutate(Category = Category, `Method Type`= `Method Type`, Year = Year, Name = Name,  Title = Title, `Programming Language` = `Programming Language`, Reference = Reference) %>% 
+              select(Category, `Method Type`, Year, Name, Title, `Programming Language`, Reference)
+
+topiclist <- which(!is.na(cdat$Category))
+
+knitr::kable(cdat, align="l", "html", escape=FALSE) %>% 
+  kable_styling(bootstrap_options = c("hover", "striped", "responsive")) %>% 
+  column_spec(1, width="1%") %>% column_spec(2, width="1%") %>%
+  column_spec(3, width="20%") %>% column_spec(4, width="30%") %>%
+  column_spec(5, width="30%")
+```
+
